@@ -1,14 +1,12 @@
-    
-    <!-- Inject single header partials here -->
-    <?php require "partials/header.php"; ?> 
+<?php require "partials/header.php"; ?> 
 
     <?php
         $user_id =  $_GET['user_id'];
         $profile_id =  $_GET['profile_id'];
 
-        $stmt = $pdo->prepare("SELECT * FROM profile WHERE profile_id = :id");
-        $stmt->execute(['id' => $profile_id]);
-        $data = $stmt->fetch();
+        $fstmt = $pdo->prepare("SELECT * FROM profile WHERE profile_id = :id");
+        $fstmt->execute(['id' => $profile_id]);
+        $data = $fstmt->fetch();
 
         if(isset($_POST['delete']) && $data['profile_id']){
 
@@ -46,7 +44,7 @@
                 <div class="card-body">
                 <h5 class="mb-4">Are you sure?</h5> 
                 <form method="post" action="">
-                    <input type="submit" name="delete" style='border: white solid thin; color:' class='btn btn-warning btn-lg' value="DELETE">
+                    <button type="submit" name="delete" style='border: white solid thin; color:' class='btn btn-warning btn-lg' >Delete</button>
                     <input type="submit" name="cancel" style='border: white solid thin; color: #5ab2f5;' class='btn btn-default btn-lg' value="CANCEL">
                 </form>
                 </div>

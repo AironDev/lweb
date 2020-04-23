@@ -1,9 +1,6 @@
-    
-    <!-- Inject single header partials here -->
-    <?php require "partials/header.php"; ?> 
-
+<?php require "partials/header.php"; ?> 
     <?php 
-        $id = $_GET['id'];
+        $id = $_GET['profile_id'];
 
         $stmt = $pdo->prepare("SELECT * FROM profile WHERE profile_id = :id");
         $stmt->execute(['id' => $id]);
@@ -16,8 +13,8 @@
 
         $newData = array(
             ':user_id' => $_SESSION['user_id'],
-            ':fname' => $_POST['fname'],
-            ':lname' => $_POST['lname'],
+            ':fname' => $_POST['first_name'],
+            ':lname' => $_POST['last_name'],
             ':email' => $_POST['email'],
             ':headline' => $_POST['headline'],
             ':summary' => $_POST['summary'],
@@ -32,7 +29,7 @@
 
         $profile_id = $_POST['profile_id'];
         addFlash('Updated Successfully');
-        header("Location: view.php?id=$profile_id");
+        header("Location: index.php");
     }
 ?>
     <body>
@@ -56,29 +53,36 @@
                         <input type="text" name="profile_id" value="<?php echo $oldData['profile_id']?>" hidden>
 
                         <label class="label-for-fname" >First Name</label>
-                        <input type="text" required name="fname" id="fname" class="form-control " value="<?php echo $oldData['first_name']?>">
+                        <input type="text" required name="first_name" id="fname" class="form-control " onmouseleave="return validateAddNew('fname')" value="<?php echo $oldData['first_name']?>">
+                        <p id="fnameErr" class="text-danger"></p>
 
                         <label class="label-for-lname">Last Name</label>
-                        <input type="text" required name="lname" id="lname" class="form-control" value="<?php echo $oldData['last_name']?>">
+                        <input type="text" required name="last_name" id="lname" class="form-control" onmouseleave="return validateAddNew('lname')" value="<?php echo $oldData['last_name']?>">
+                        <p id="lnameErr" class="text-danger"></p>
 
                         <label class="label-for-email">Email</label>
-                        <input type="email" required name="email" id="email" class="form-control" value="<?php echo $oldData['email']?>">
+                        <input type="email" required name="email" id="email" class="form-control" onmouseleave="return validateAddNew('email')" value="<?php echo $oldData['email']?>">
+                        <p id="emailErr" class="text-danger"></p>
 
                         <label class="label-for-headline">Headline</label>
-                        <input type="text" required name="headline" id="headline" class="form-control" value="<?php echo $oldData['headline']?>">
+                        <input type="text" required name="headline" id="headline" class="form-control" onmouseleave="return validateAddNew('headline')" value="<?php echo $oldData['headline']?>">
+                        <p id="headlineErr" class="text-danger"></p>
 
                         <label class="label-for-summary">Summary</label>
-                        <textarea cols="10"  rows="5" name="summary" id="summary" class="form-control"><?php echo $oldData['summary']?></textarea>
+                        <textarea cols="10"  rows="5" name="summary" id="summary" onmouseleave="return validateAddNew('summary')" class="form-control"><?php echo $oldData['summary']?></textarea>
+                        <p id="summaryErr" class="text-danger"></p>
+                        
+                        <button type="submit" class="btn btn-primary" name="submit" onclick="//validateNew()">Save</button>
+                    </form>
                     
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary" name="submit" onclick="//validateNew()">UPDATE</button>
                 </div>
-                </form>
+                
         </section>
         </div>
         <footer></footer>
-    <script src="" type = "text/javascript"></script>
+    <script src="../assets/js/validate.js" type = "text/javascript"></script>
     </body>
 </html>
 

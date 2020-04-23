@@ -1,8 +1,8 @@
 <?php  
 	$host = 'localhost';
-	$db = 'dmiscb';
-	$user = 'root';
-	$pass = 'root';
+	$db = 'pelpubco_dlwebb';
+	$user = 'pelpubco_airondev';
+	$pass = 'xaironydevz!';
 	$charset = 'utf8mb4';
 	$options = [
 	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -14,7 +14,8 @@
 	try {
 		$pdo = new PDO($dsn, $user, $pass, $options);
 	} catch (PDOException $e) {
-		var_dump($e);
+	    var_dump($e); 
+		//throw new PDOException($e->getMessage(), (int)$e->getCode());
 	}
 
 ?>

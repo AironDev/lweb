@@ -1,6 +1,4 @@
-    
-    <!-- Inject single header partials here -->
-    <?php require "partials/header.php"; ?> 
+<?php require "partials/header.php"; ?> <!-- Inject single header partials here -->
 
     <?php 
         $id = $_GET['profile_id'];

@@ -1,6 +1,7 @@
+<?php ob_start(); session_start();  ?>
 <?php 
-    require_once($_SERVER["DOCUMENT_ROOT"]. 'database/connection.php');  
-    session_start(); 
+    require_once('database/connection.php'); 
+     
 
     function addFlash($msg){
          $_SESSION['flashMsg'] = $msg;
@@ -41,7 +42,6 @@
         }
     }
 
-   
 
 ?>
 
@@ -49,7 +49,7 @@
 <html lang="en">
     <head>
         <meta charset="utf">
-        <title>Aaron Aniebiet</title>  
+        <title>Aaron, Aniebiet B.</title>  
 
         <!-- CSS Framework/Misc -->
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">

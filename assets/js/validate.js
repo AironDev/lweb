@@ -30,14 +30,14 @@ function validateAddNew(input) {
 	var heErr = document.getElementById('headlineErr');
 	var suErr = document.getElementById('summaryErr');
 
-var regex = /^\S+@\S+\.\S+$/;
+var regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/; // /^\S+@\S+\.\S+$/;
 switch(input){
 		case 'fname':
-			(fn == "") ? fnErr.innerHTML = 'Field is required' : fnErr.innerHTML = '';
+			(fn === "") ? fnErr.innerHTML = 'Please enter your First Name' : fnErr.innerHTML = '';
 			break;
 
 		case 'lname':
-			(ln == "") ? lnErr.innerHTML = 'Field is required' : lnErr.innerHTML = '';
+			(ln === "") ? lnErr.innerHTML = 'Please enter your Last Name' : lnErr.innerHTML = '';
 			break;
 
 		case 'email':
@@ -45,11 +45,11 @@ switch(input){
 			break;
 
 		case 'headline':
-			(he == "") ? heErr.innerHTML = 'Field is required' : heErr.innerHTML = '';
+			(he === "") ? heErr.innerHTML = 'Headline is required' : heErr.innerHTML = '';
 			break;
 
 		case 'summary':
-			(su == "") ? suErr.innerHTML = 'Field is required' : suErr.innerHTML = '';
+			(su === "") ? suErr.innerHTML = 'Summary is required' : suErr.innerHTML = '';
 			break;
 
 		default:
