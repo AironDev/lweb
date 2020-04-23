@@ -67,6 +67,6 @@
         );
 
         addFlash('Added Successfully');
-        header("Location: ");
+        header("Location: index.php");
     }
 ?>
