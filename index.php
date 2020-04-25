@@ -16,9 +16,9 @@
                     <p class="text-success"> <?php showFlash(); removeFlash();      //authRedirect(); ?></p>
                     <div class="float-right">
                        <?php 
-                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='/add.php' >Add New Entry</a>" ;}
-                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='/logout.php'>Logout</a>" ;}
-                            if(!authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='/login.php'>Please log in</a>" ;}
+                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='add.php' >Add New Entry</a>" ;}
+                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='logout.php'>Logout</a>" ;}
+                            if(!authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='login.php'>Please log in</a>" ;}
 
                          ?>
                      </div>

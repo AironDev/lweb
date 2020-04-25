@@ -1,8 +1,8 @@
 <?php  
 	$host = 'localhost';
-	$db = 'pelpubco_dlwebb';
-	$user = 'pelpubco_airondev';
-	$pass = 'xaironydevz!';
+	$db = 'dmiscb';
+	$user = 'root';
+	$pass = 'root';
 	$charset = 'utf8mb4';
 	$options = [
 	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
