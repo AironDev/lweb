@@ -15,12 +15,11 @@
                     <h3 class="card-title"> <?php echo $data['first_name'] . "'s " .'Profile'?></h3>  
                     <p class="text-success"> <?php showFlash(); removeFlash();  authRedirect(); ?></p>
                     <div class="float-right">
-                       <?php 
-                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='login.php' >Add New</a>" ;}
-                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default'>Edit</a>" ;}
-                            if(authUser()){ echo "<a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='index.php'>Home</a>" ;}
-
-                         ?>
+                       <?php if(authUser()):?>
+                            <a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='add.php' >Add New</a>
+                            <a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href="edit.php?profile_id=<?php echo $_GET['profile_id']; ?>" >Edit</a>
+                            <a style='border: white solid thin; color: #5ab2f5;' class='btn btn-default' href='index.php'>Home</a>
+                        <?php endif; ?>
                      </div>
                 </div>
                 <div class="card-body">
