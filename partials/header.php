@@ -43,6 +43,47 @@
     }
 
 
+//     function validatePos() {
+//   for($i=1; $i<=9; $i++) {
+//     if ( ! isset($_POST['year'.$i]) ) continue;
+//     if ( ! isset($_POST['desc'.$i]) ) continue;
+
+//     $year = $_POST['year'.$i];
+//     $desc = $_POST['desc'.$i];
+
+//     if ( strlen($year) == 0 || strlen($desc) == 0 ) {
+//       return "All fields are required";
+//     }
+
+//     if ( ! is_numeric($year) ) {
+//       return "Position year must be numeric";
+//     }
+//   }
+//   return true;
+// }
+
+
+    function insertPos() {
+        $rank = 1;
+        for($i=1; $i<=9; $i++) {
+            // if ( ! isset($_POST['year'.$i]) ) continue;
+            // if ( ! isset($_POST['desc'.$i]) ) continue;
+            $year = $_POST['year'.$i];
+            $desc = $_POST['desc'.$i];
+            $stmt = $pdo->prepare('INSERT INTO position
+            (profile_id, rank, year, description) 
+            VALUES ( :pid, :rank, :year, :desc)');
+            $stmt->execute(array(
+            ':pid' => $profile_id,
+            ':rank' => $rank,
+            ':year' => $year,
+            ':desc' => $desc));
+            $rank++;
+        }
+    
+    }
+
+
 ?>
 
 <!DOCTYPE html>

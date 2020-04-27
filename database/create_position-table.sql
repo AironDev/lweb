@@ -1,4 +1,4 @@
-CREATE TABLE Position (
+CREATE TABLE position (
   position_id INTEGER NOT NULL AUTO_INCREMENT,
   profile_id INTEGER,
   rank INTEGER,

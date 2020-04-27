@@ -2,9 +2,14 @@
 
     <?php 
         $id = $_GET['profile_id'];
-        $stmt = $pdo->prepare("SELECT * FROM profile WHERE profile_id = :id");
-        $stmt->execute(['id' => $id]);
-        $data = $stmt->fetch();
+        $profile_stmt = $pdo->prepare("SELECT * FROM profile WHERE profile_id = :id ") ;
+        $profile_stmt->execute(['id' => $id]);
+        $profile = $profile_stmt->fetch();
+
+        $position_stmt = $pdo->prepare("SELECT * FROM position WHERE profile_id = :id ") ;
+        $position_stmt->execute(['id' => $id]);
+        $positions = $position_stmt->fetchAll();
+
 
     ?>
     <body>
@@ -12,7 +17,7 @@
         <div class="container">
             <section class="card white">
                 <div class="card-header">
-                    <h3 class="card-title"> <?php echo $data['first_name'] . "'s " .'Profile'?></h3>  
+                    <h3 class="card-title"> <?php echo $profile['first_name'] . "'s " .'Profile'?></h3>  
                     <p class="text-success"> <?php showFlash(); removeFlash();  authRedirect(); ?></p>
                     <div class="float-right">
                        <?php if(authUser()):?>
@@ -30,7 +35,7 @@
                                         <td>
                                             <label>ID</label>
                                              <data class="ml-3" style="display: inline-flex;">
-                                               <?php echo $data['profile_id']; ?>
+                                               <?php echo $profile['profile_id']; ?>
                                              </data>
                                         </td>
 
@@ -39,7 +44,7 @@
                                         <td>
                                             <label>Name</label>
                                              <data class="ml-3" style="display: inline-flex;">
-                                                <?php echo $data['first_name'] . " " . $data['last_name']?>
+                                                <?php echo $profile['first_name'] . " " . $profile['last_name']?>
                                              </data>
                                         </td>
                                     </tr>
@@ -48,7 +53,7 @@
                                         <td>
                                             <label>Email</label>
                                              <data class="ml-3" style="display: inline-flex;">
-                                                 <?php echo $data['email']; ?>
+                                                 <?php echo $profile['email']; ?>
                                              </data>
                                         </td>
                                     </tr>
@@ -57,7 +62,7 @@
                                         <td>
                                             <label>Headline</label>
                                              <data class="ml-5 flex" style="display: block;">
-                                                <?php echo $data['headline']; ?>
+                                                <?php echo $profile['headline']; ?>
                                              </data>
                                         </td>
                                     </tr>
@@ -67,8 +72,20 @@
                                         <td>
                                             <label>Summary</label>
                                              <data class="ml-5" style="display: block;">
-                                                <?php echo $data['summary']; ?>
+                                                <?php echo $profile['summary']; ?>
                                              </data>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Positions</label>
+                                            <?php foreach ($positions as $position): ?>
+                                            <data class="ml-5" style="display: block;">
+                                                <div>Year: <span style="margin-left:60px"><?php echo $position['year']; ?></span> </div>
+                                                <div>Descritption: <span class="ml-2"><?php echo $position['description']; ?></span></div>
+                                                <hr>
+                                            </data>
+                                            <?php endforeach; ?>
                                         </td>
                                     </tr>
                                 </tbody>
