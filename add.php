@@ -6,7 +6,8 @@
                 <div class="card-header">
                     <h3 class="card-title">ADD RESUME</h3>  
                     <p class="text-danger"> <?php showFlash(); removeFlash(); authRedirect(); ?></p>
-
+                    <!-- <p class="text-danger">All values are required</p>
+ -->
                     <div class="float-right">
                        <?php 
                             if(authUser()){ echo "<a href='index.php' style='border: white solid thin; color: #5ab2f5;' class='btn btn-default'>Home</a>" ;}
@@ -18,11 +19,11 @@
                     <form method="post" class="form col-md-10" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
                         <p id="allErr" class="text-danger"></p>
                         <label class="label-for-fname" >First Name</label>
-                        <input type="text" required = 'required' name="first_name" id="fname" class="form-control" onmouseleave="return validateAddNew('fname')">
+                        <input type="text"  name="first_name" id="fname" class="form-control" onmouseleave="return validateAddNew('fname')">
                         <p id="fnameErr" class="text-danger"></p>
 
                         <label class="label-for-lname">Last Name</label>
-                        <input type="text"  required = 'required' name="last_name" id="lname" class="form-control" onmouseleave="return validateAddNew('lname')">
+                        <input type="text"   name="last_name" id="lname" class="form-control" onmouseleave="return validateAddNew('lname')">
                         <p id="lnameErr" class="text-danger"></p>
 
                         <label class="label-for-email">Email</label>
@@ -30,11 +31,11 @@
                         <p id="emailErr" class="text-danger"></p>
 
                         <label class="label-for-headline">Headline</label>
-                        <input type="text"  required = 'required' name="headline" id="headline" class="form-control" onmouseleave="return validateAddNew('headline')">
+                        <input type="text"  name="headline" id="headline" class="form-control" onmouseleave="return validateAddNew('headline')">
                         <p id="headlineErr" class="text-danger"></p>
 
                         <label class="label-for-summary">Summary</label>
-                        <textarea cols="10"  required = 'required'  rows="5" name="summary" id="summary" class="form-control" onmouseleave="return validateAddNew('summary')" ></textarea>
+                        <textarea cols="10"   rows="5" name="summary" id="summary" class="form-control" onmouseleave="return validateAddNew('summary')" ></textarea>
                         <p id="summaryErr" class="text-danger"></p>
                         <label class="label-for-position">Position</label>
                         <button id="addPos" onclick="return false">+</button>
@@ -60,22 +61,7 @@
     if(isset($_POST['submit'])){
         //echo $_SESSION['user_id'];
 
-       if(isset($_POST['headline']) &&  isset($_POST['email'])){
-
-            // $msg = validateProfile();
-            // if(is_string($msg)){
-            //     addFlash($msg);
-            //     header("Location: add.php");
-            //     return;
-            // }
-            // $msg = validatePos();
-            // if(is_string($msg)){
-            //     addFlash($msg);
-            //     header("Location: add.php");
-            //     return;
-            // }
-
-            // Data is valid - time to insert
+       if($_POST['headline'] != null || $_POST['first_name'] != "" ||  $_POST['email'] != ""){
             $stmt = $pdo->prepare('INSERT INTO profile
             (user_id, first_name, last_name, email, headline, summary)
             VALUES ( :user_id, :fname, :lname, :email, :headline, :summary)');
@@ -98,8 +84,13 @@
                 $year = $_POST['year'.$i];
                 $desc = $_POST['desc'.$i];
 
-                if (strlen($year) == 0 || strlen($desc) == 0  || (!is_numeric($year)) || $desc == null) {
-                    addFlash("All fields are required or Position year must be numeric ");
+                if (strlen($year) == 0 || strlen($desc) == 0) {
+                    addFlash("All fields are required");
+                    header("Location: add.php");
+                }
+
+                 if (!is_numeric($year)) {
+                    addFlash("Position year must be numeric ");
                     header("Location: add.php");
                 }
 
