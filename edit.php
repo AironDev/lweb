@@ -114,6 +114,7 @@
 
 
             </script>
+             <script src="../assets/js/validate.js" type = "text/javascript"></script>
     </body>
 </html>
 <?php 
