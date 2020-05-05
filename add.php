@@ -37,13 +37,22 @@
                         <label class="label-for-summary">Summary</label>
                         <textarea cols="10"   rows="5" name="summary" id="summary" class="form-control" onmouseleave="return validateAddNew('summary')" ></textarea>
                         <p id="summaryErr" class="text-danger"></p>
-                        <label class="label-for-position">Position</label>
-                        <button id="addPos" onclick="return false">+</button>
-                        <div id="position_fields">
-                            <!-- position fiels are injected here from jquery -->
-                        </div>
-                        <hr/>
-                        <button type="submit" value="Add" class="btn btn-primary mt-2" name="submit" onmouseover="validateAddNew('submit')">Add</button>
+
+                        <!--  Education Fields  -->
+                        <div class="label-for-position pd-2">Education</div>
+                        <div id="education_fields"></div> <!-- Education fiels are injected here from jquery -->
+                        <button id="addEdu" class="" onclick="return false">+</button>
+                        <hr>
+                        
+
+                        <!--  Position Fields  -->
+                        <div class="label-for-position pd-2">Position</div>
+                        <div id="position_fields" class="pd-2"></div><!-- position fiels are injected here from jquery -->
+                        <button id="addPos" class="" onclick="return false">+</button>
+                        <hr>
+                        
+                        <div class="clearfix"></div>
+                        <button type="submit" value="Add" class="btn btn-primary mt-" name="submit" onmouseover="validateAddNew('submit')">Add</button>
                         
                     </form>
                 </div>
@@ -53,7 +62,8 @@
         </section>
         </div>
         <footer></footer>
-    <script src="../assets/js/validate.js" type = "text/javascript"></script>
+        <script src="assets/js/validate.js" type = "text/javascript"></script>
+        <script src="assets/js/resume_fields.js" type = "text/javascript"></script>
     </body>
 </html>
 
@@ -61,6 +71,7 @@
     if(isset($_POST['submit'])){
         //echo $_SESSION['user_id'];
 
+        // Insert profile data
        if($_POST['headline'] != null || $_POST['first_name'] != "" ||  $_POST['email'] != ""){
             $stmt = $pdo->prepare('INSERT INTO profile
             (user_id, first_name, last_name, email, headline, summary)
@@ -76,7 +87,7 @@
 
             $profile_id = $pdo->lastInsertId();
 
-            
+        // Insert Position Data   
             $rank = 1;
             for($i=1; $i<=9; $i++) {
                 if ( ! isset($_POST['year'.$i]) ) continue;
@@ -90,7 +101,7 @@
                 }
 
                  if (!is_numeric($year)) {
-                    addFlash("Position year must be numeric ");
+                    addFlash("Year must be numeric ");
                     header("Location: add.php");
                 }
 
@@ -102,7 +113,44 @@
                 ':rank' => $rank,
                 ':year' => $year,
                 ':desc' => $desc));
+
                 $rank++;
+            }
+
+            // Insert Education Data
+            $ranked = 1;
+            for($i=1; $i<=9; $i++) {
+                if ( ! isset($_POST['edu_year'.$i]) ) continue;
+                if ( ! isset($_POST['edu_school'.$i]) ) continue;
+                $year = $_POST['edu_year'.$i];
+                $school = $_POST['edu_school'.$i];
+
+                // lookup the school is its there
+                $institution_id = false;
+                $stmt = $pdo->prepare('SELECT institution_id FROM institution WHERE name = :name');
+                $stmt->execute(array(':name'=> $school));
+
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($row !== false) $institution_id = $row['institution_id'];
+
+                // if there was no institution insert it
+                if($institution_id === false){
+                    $stmt = $pdo->prepare('INSERT INTO institution (name) VALUES (:name)');
+                    $stmt->execute(array(':name' => $school));
+                    $institution_id = $pdo->lastInsertId();
+                }
+
+
+                $stmt = $pdo->prepare('INSERT INTO education
+                (profile_id, rank, year, institution_id) 
+                VALUES ( :pid, :rank, :year, :institution_id)');
+                $stmt->execute(array(
+                ':pid' => $profile_id,
+                ':rank' => $ranked,
+                ':year' => $year,
+                ':institution_id' => $institution_id));
+
+                $ranked++;
             }
 
             addFlash('Added Successfully');
@@ -113,32 +161,3 @@
        }
     }
 ?>
-
-<script type="text/javascript">
-    countPos = 0;
-
-    function removePos(param){
-            $('#position'+countPos).remove();
-            console.log('Removing Position' +countPos);
-        }
-    $(document).ready(function(){
-        $('#addPos').click(function(e){
-            e.preventDefault();
-            if(countPos >= 9){
-                alert('Maximum of nine postion entries exceeded');
-                return;
-            }
-            countPos++;
-            console.log('Adding Position' +countPos);
-            var position_fields = '<div id="position' +countPos+'">\
-                                <input type="text" name="year' +countPos+'" value="" class="form-control col-sm-8 float-left" placeholder="Year">\
-                                <button id="" onclick="removePos(countPos); return false" class="form-control col-sm-2 float-right">-</button>\
-                                <textarea name="desc' +countPos+'" cols="80" rows="5" class="form-control" placeholder="Description"></textarea>\
-                            </div> <hr/>';
-            $('#position_fields').append(position_fields);
-        });
-
-    });
-
-
-</script>

@@ -11,6 +11,10 @@
         $getPositionStmt->execute(['id' => $id]);
         $oldPositions = $getPositionStmt->fetchAll();
 
+        $getEducationStmt = $pdo->prepare("SELECT * FROM education INNER JOIN institution on education.institution_id = institution.institution_id  WHERE profile_id = :id ");
+        $getEducationStmt->execute(['id' => $id]);
+        $oldEducation = $getEducationStmt->fetchAll();
+
     ?>
     <body>
         <header></header>
@@ -51,26 +55,43 @@
                         <label class="label-for-summary">Summary</label>
                         <textarea cols="10"  rows="5" name="summary" id="summary" onmouseleave="return validateAddNew('summary')" class="form-control"><?php echo $oldProfileData['summary']?></textarea>
                         <p id="summaryErr" class="text-danger"></p>
-                        <?php if($oldPositions == null): ?>
-                            <label class="label-for-position">Position</label>
-                            <button id="addPos" onclick="return false">+</button>
-                            <div id="position_fields">
-                            <!-- position fiels are injected here from jquery -->
-                            </div>
-                             <hr/>
-                        <?php endif ?>
-                        
-                        <?php $num = 1; foreach ($oldPositions as  $position): ?>
-                        <div id="<?php echo "position".$position['position_id']; ?>" >                              
-                            <input type="text" name="<?php echo "year".$num; ?>" value="<?php echo $position['year'] ?>" class="form-control col-sm-8 float-left" placeholder="Year">
-                            <button id="" onclick=" return false" class="form-control col-sm-2 float-right">-</button>
-                            <textarea name="<?php echo "desc".$num; ?>" cols="80" rows="5" class="form-control" placeholder="Description"><?php echo $position['description'] ?></textarea>
-                        </div>
-                        <?php  $num++; endforeach; ?>
 
-                        <?php if($num < 9): ?>
-                            <label class="label-for-position">Position</label>
-                            <button id="addPos" onclick="return false">+</button>
+
+
+                         <!--  Displays existing Education records   -->
+                        <label class="label-for-position">Education</label>
+                        <div id="education_fields" class="pd-3">
+                            <?php $eduNum = 1; foreach ($oldEducation as  $education): ?>
+                            <div id="<?php echo "education".$eduNum; ?>" class="mb-2">                              
+                                <input type="text" name="<?php echo "edu_year".$eduNum; ?>" value="<?php echo $education['year'] ?>" class="form-control col-sm-11 float-left" placeholder="Year">
+                                <button id="" class="removePos" onclick=" return false" class="form-control col-sm-1 float-right"><i class="fa fa-times-circle-o"></i></button>
+                                <textarea name="<?php echo "edu_school".$eduNum; ?>" cols="80" rows="2" class="form-control" placeholder="Description"><?php echo $education['name'] ?></textarea>
+                            </div>
+                            <?php  $eduNum++; endforeach; ?>
+                        </div>
+
+                        <!-- Displays a button to add new education record if the exisitng ones is less than 9 -->
+                        <?php if($eduNum < 9): ?>
+                        <button id="addEdu" class="" onclick="return false">Add New</button>
+                        <div id="education_fields"></div> <hr><!-- Education fiels are injected here from jquery -->
+                         <?php endif ?>
+
+
+                         <!--  Displays existing Positions   -->
+                        <label class="label-for-position">Positions</label>
+                        <div id="position_fields">
+                            <?php $posNum = 1; foreach ($oldPositions as  $position): ?>
+                            <div id="<?php echo "position".$posNum; ?>" class="mb-2">                              
+                                <input type="text" name="<?php echo "year".$posNum; ?>" value="<?php echo $position['year'] ?>" class="form-control col-sm-11 float-left" placeholder="Year">
+                                <button id="" class="removePos" onclick=" return false" class="form-control col-sm-1 float-right"><i class="fa fa-times-circle-o"></i></button>
+                                <textarea name="<?php echo "desc".$posNum; ?>" cols="80" rows="2" class="form-control" placeholder="Description"><?php echo $position['description'] ?></textarea>
+                            </div>
+                            <?php  $posNum++; endforeach; ?>
+                        </div>
+
+                        <!-- Displays a button to add new position record if the exisitng ones is less than 9 -->
+                        <?php if($posNum < 9): ?>
+                            <button id="addPos" onclick="return false">Add New</button>
                             <div id="position_fields">
                             <!-- position fiels are injected here from jquery -->
                             </div>
@@ -86,35 +107,8 @@
         </section>
         </div>
         <footer></footer>
-            <script type="text/javascript">
-                countPos = 0;
-
-                function removePos(param){
-                        $('#position'+countPos).remove();
-                        console.log('Removing Position' +countPos);
-                    }
-                $(document).ready(function(){
-                    $('#addPos').click(function(e){
-                        e.preventDefault();
-                        if(countPos >= 9){
-                            alert('Maximum of nine postion entries exceeded');
-                            return;
-                        }
-                        countPos++;
-                        console.log('Adding Position' +countPos);
-                        var position_fields = '<div id="position' +countPos+'">\
-                                            <input type="text" name="year' +countPos+'" value="" class="form-control col-sm-8 float-left" placeholder="Year">\
-                                            <button id="" onclick="removePos(countPos); return false" class="form-control col-sm-2 float-right">-</button>\
-                                            <textarea name="desc' +countPos+'" cols="80" rows="5" class="form-control" placeholder="Description"></textarea>\
-                                        </div> <hr/>';
-                        $('#position_fields').append(position_fields);
-                    });
-
-                });
-
-
-            </script>
              <script src="../assets/js/validate.js" type = "text/javascript"></script>
+             <script src="../assets/js/resume_fields.js" type = "text/javascript"></script>
     </body>
 </html>
 <?php 
@@ -134,31 +128,73 @@
         $updateProfileStmt = $pdo->prepare($updateProfileSql);
         $updateProfileStmt->execute($newProfileData);
 
+         $profile_id = $_POST['profile_id'];
+
         // Position
 
-        // Clear out the old position entries
-        $deletePositionStmt = $pdo->prepare('DELETE FROM Position WHERE profile_id=:pid');
-        $deletePositionStmt->execute(array( ':pid' => $_REQUEST['profile_id']));
+        
+ 
+             //Clear out the old position entries
+            $deletePositionStmt = $pdo->prepare('DELETE FROM position WHERE profile_id=:pid');
+            $deletePositionStmt->execute(array( ':pid' => $profile_id));
+            // Insert new position
+            $rank = 1;
+            for($i=1; $i<=9; $i++) {
+                if ( ! isset($_POST['year'.$i]) ) continue;
+                if ( ! isset($_POST['desc'.$i]) ) continue;
+                $year = $_POST['year'.$i];
+                $desc = $_POST['desc'.$i];
+                $updatePositionStmt = $pdo->prepare('INSERT INTO position
+                (profile_id, rank, year, description)
+                VALUES ( :pid, :rank, :year, :desc)');
+                $updatePositionStmt->execute(array(
+                ':pid' => $_REQUEST['profile_id'],
+                ':rank' => $rank,
+                ':year' => $year,
+                ':desc' => $desc)
+                );
+                $rank++;
+            }
 
-        // Insert the position entries
-        $rank = 1;
-        for($i=1; $i<=9; $i++) {
 
-            if ( ! isset($_POST['year'.$i]) ) continue;
-            if ( ! isset($_POST['desc'.$i]) ) continue;
-            $year = $_POST['year'.$i];
-            $desc = $_POST['desc'.$i];
-            $stmt = $pdo->prepare('INSERT INTO position
-            (profile_id, rank, year, description)
-            VALUES ( :pid, :rank, :year, :desc)');
-            $stmt->execute(array(
-            ':pid' => $_REQUEST['profile_id'],
-            ':rank' => $rank,
-            ':year' => $year,
-            ':desc' => $desc)
-            );
-            $rank++;
-        }
+            //Clear out the old education entries
+            $deleteEducationStmt = $pdo->prepare('DELETE FROM education WHERE profile_id=:pid');
+            $deleteEducationStmt->execute(array( ':pid' => $profile_id));
+         // Insert Education Data
+            $ranked = 1;
+            for($k=1; $k<=9; $k++) {
+                if ( ! isset($_POST['edu_year'.$k]) ) continue;
+                if ( ! isset($_POST['edu_school'.$k]) ) continue;
+                $year = $_POST['edu_year'.$k];
+                $school = $_POST['edu_school'.$k];
+
+                // lookup the school is its there
+                $institution_id = false;
+                $stmt = $pdo->prepare('SELECT institution_id FROM institution WHERE name = :name');
+                $stmt->execute(array(':name'=> $school));
+
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($row !== false) $institution_id = $row['institution_id'];
+
+                // if there was no institution insert it
+                if($institution_id === false){
+                    $stmt = $pdo->prepare('INSERT INTO institution (name) VALUES (:name)');
+                    $stmt->execute(array(':name' => $school));
+                    $institution_id = $pdo->lastInsertId();
+                }
+
+               
+                $stmt = $pdo->prepare('INSERT INTO education
+                (profile_id, rank, year, institution_id) 
+                VALUES ( :pid, :rank, :year, :institution_id)');
+                $stmt->execute(array(
+                ':pid' => $profile_id,
+                ':rank' => $ranked,
+                ':year' => $year,
+                ':institution_id' => $institution_id));
+
+                $ranked++;
+            }
 
 
         addFlash('Updated Successfully');

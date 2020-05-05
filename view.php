@@ -10,6 +10,10 @@
         $position_stmt->execute(['id' => $id]);
         $positions = $position_stmt->fetchAll();
 
+        $education_stmt = $pdo->prepare("SELECT * FROM education INNER JOIN institution on education.institution_id = institution.institution_id WHERE profile_id = :id ") ;
+        $education_stmt->execute(['id' => $id]);
+        $educations = $education_stmt->fetchAll();
+
 
     ?>
     <body>
@@ -74,6 +78,18 @@
                                              <data class="ml-5" style="display: block;">
                                                 <?php echo $profile['summary']; ?>
                                              </data>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Education</label>
+                                            <?php foreach ($educations as $education): ?>
+                                            <data class="ml-5" style="display: block;">
+                                                <div>Year: <span style="margin-left:60px"><?php echo $education['year']; ?></span> </div>
+                                                <div>School: <span class="ml-2"><?php echo $education['name']; ?></span></div>
+                                                <hr>
+                                            </data>
+                                            <?php endforeach; ?>
                                         </td>
                                     </tr>
                                     <tr>

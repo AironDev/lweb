@@ -42,48 +42,6 @@
         }
     }
 
-
-//     function validatePos() {
-//   for($i=1; $i<=9; $i++) {
-//     if ( ! isset($_POST['year'.$i]) ) continue;
-//     if ( ! isset($_POST['desc'.$i]) ) continue;
-
-//     $year = $_POST['year'.$i];
-//     $desc = $_POST['desc'.$i];
-
-//     if ( strlen($year) == 0 || strlen($desc) == 0 ) {
-//       return "All fields are required";
-//     }
-
-//     if ( ! is_numeric($year) ) {
-//       return "Position year must be numeric";
-//     }
-//   }
-//   return true;
-// }
-
-
-    function insertPos() {
-        $rank = 1;
-        for($i=1; $i<=9; $i++) {
-            // if ( ! isset($_POST['year'.$i]) ) continue;
-            // if ( ! isset($_POST['desc'.$i]) ) continue;
-            $year = $_POST['year'.$i];
-            $desc = $_POST['desc'.$i];
-            $stmt = $pdo->prepare('INSERT INTO position
-            (profile_id, rank, year, description) 
-            VALUES ( :pid, :rank, :year, :desc)');
-            $stmt->execute(array(
-            ':pid' => $profile_id,
-            ':rank' => $rank,
-            ':year' => $year,
-            ':desc' => $desc));
-            $rank++;
-        }
-    
-    }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -95,12 +53,24 @@
         <!-- CSS Framework/Misc -->
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/animate/animate.min.css">
+        <link rel="stylesheet" href="assets/jquery/jquery-ui-1.12.1/jquery-ui.min.css">
         <link rel="stylesheet" href="assets/css/custom.css">
     
         <!-- Font Icons -->
         <link rel="stylesheet" href="assets/font-icons/font-awesome/css/font-awesome.css">
     
         <!-- Head Scripts -->
-        <script type="text/javascript" src='assets/jquery/jquery.min.js'></script>
+        <script type="text/javascript" src='assets/jquery/jquery-3.5.0.js'></script>
+        <script type="text/javascript" src='assets/jquery/jquery-ui-1.12.1/jquery-ui.min.js'></script>
         <script src='assets/bootstrap/js/bootstrap.min.js'></script>
+
+        <script type="text/javascript">
+            $(document).on("focus", "#education_fields", function(){
+    var data = 'test.php';
+     $('#school').autocomplete({
+        source: 'school.php'
+    });
+     console.dir('hello from education_fields');
+})
+        </script>
     </head>
