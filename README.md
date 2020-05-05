@@ -1,10 +1,4 @@
-<a href="http://fvcproductions.com"><img src="https://avatars1.githubusercontent.com/u/4284691?v=3&s=200" title="FVCproductions" alt="FVCproductions"></a>
-
-<!-- [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com) -->
-
-***INSERT GRAPHIC HERE (include hyperlink in image)***
-
-# Lair Web
+# Lairn Web
 
 > Web Development for everybody
 
@@ -30,8 +24,8 @@
 
 ## FAQ
 
-- **How do I do *specifically* so and so?**
-    - No problem! Just do this.
+- **How do I do run this app**
+    - You'll need to clone the repo, then host in a Webserver that supports PHP.
 
 ---
 
@@ -39,8 +33,8 @@
 
 Reach out to me at one of the following places!
 
-- Website at <a href="http://linkedin.com/aaron-aniebiet" target="_blank">`fvcproductions.com`</a>
-- Twitter at <a href="http://twitter.com/airon_dev" target="_blank">`@fvcproductions`</a>
+- Linkedin at <a href="http://linkedin.com/aaron-aniebiet" target="_blank">`linkedin.com`</a>
+- Twitter at <a href="http://twitter.com/airon_dev" target="_blank">`@airon_dev`</a>
 - Insert more social links here.
 
 ---
