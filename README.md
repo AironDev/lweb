@@ -4,7 +4,7 @@
 
 > as taught by Prof. Charles Severance
 
-**Badges will go here**
+**Web Technologies used**
 
 - Javascript
 - JSON
